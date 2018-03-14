@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.background.sync.WaterReminderIntentService;
+import com.example.android.background.utilities.NotificationUtils;
 import com.example.android.background.utilities.PreferenceUtilities;
 
 import static com.example.android.background.sync.ReminderTasks.ACTION_INCREMENT_WATER_COUNT;
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements
      */
     private void updateWaterCount() {
         int waterCount = PreferenceUtilities.getWaterCount(this);
-        mWaterCountDisplay.setText(waterCount+"");
+        mWaterCountDisplay.setText(waterCount + "");
     }
 
     /**
@@ -85,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements
         mToast = Toast.makeText(this, R.string.water_chug_toast, Toast.LENGTH_SHORT);
         mToast.show();
 
-        Intent intent = new Intent(this,WaterReminderIntentService.class);
+        Intent intent = new Intent(this, WaterReminderIntentService.class);
         intent.setAction(ACTION_INCREMENT_WATER_COUNT);
         startService(intent);
     }
@@ -109,5 +110,9 @@ public class MainActivity extends AppCompatActivity implements
         } else if (PreferenceUtilities.KEY_CHARGING_REMINDER_COUNT.equals(key)) {
             updateChargingReminderCount();
         }
+    }
+
+    public void testNotification(View view) {
+        NotificationUtils.remindUserBecauseCharging(this);
     }
 }
