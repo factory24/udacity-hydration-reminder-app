@@ -15,11 +15,15 @@
  */
 package com.example.android.background;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,10 +39,11 @@ import static com.example.android.background.sync.ReminderTasks.ACTION_INCREMENT
 public class MainActivity extends AppCompatActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener {
 
+    IntentFilter mChargingIntentFilter;
+    ChargingBroadcastReceiver mChargingReceiver;
     private TextView mWaterCountDisplay;
     private TextView mChargingCountDisplay;
     private ImageView mChargingImageView;
-
     private Toast mToast;
 
     @Override
@@ -60,6 +65,25 @@ public class MainActivity extends AppCompatActivity implements
         /** Setup the shared preference listener **/
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefs.registerOnSharedPreferenceChangeListener(this);
+
+        /** For the dynamic broadcast Reciever */
+        mChargingIntentFilter = new IntentFilter();
+        mChargingIntentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
+        mChargingIntentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
+
+        mChargingReceiver = new ChargingBroadcastReceiver();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(mChargingReceiver, mChargingIntentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(mChargingReceiver);
     }
 
     /**
@@ -78,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements
         String formattedChargingReminders = getResources().getQuantityString(
                 R.plurals.charge_notification_count, chargingReminders, chargingReminders);
         mChargingCountDisplay.setText(formattedChargingReminders);
-
     }
 
     /**
@@ -92,6 +115,14 @@ public class MainActivity extends AppCompatActivity implements
         Intent intent = new Intent(this, WaterReminderIntentService.class);
         intent.setAction(ACTION_INCREMENT_WATER_COUNT);
         startService(intent);
+    }
+
+    private void showCharging(boolean isCharging) {
+        if (isCharging) {
+            mChargingImageView.setImageResource(R.drawable.ic_power_pink_80px);
+        } else {
+            mChargingImageView.setImageResource(R.drawable.ic_power_grey_80px);
+        }
     }
 
     @Override
@@ -117,5 +148,17 @@ public class MainActivity extends AppCompatActivity implements
 
     public void testNotification(View view) {
         NotificationUtils.remindUserBecauseCharging(this);
+    }
+
+    private class ChargingBroadcastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            String action = intent.getAction();
+            boolean isCharging = TextUtils.equals(action, Intent.ACTION_POWER_CONNECTED);
+            showCharging(isCharging);
+
+        }
     }
 }
