@@ -53,9 +53,6 @@ public class NotificationUtils {
     // This method will create a notification for charging.
     public static void remindUserBecauseCharging(Context context) {
 
-        notificationManager = (NotificationManager)
-                context.getSystemService(Context.NOTIFICATION_SERVICE);
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             NotificationChannel notificationChannel = new NotificationChannel(
@@ -95,6 +92,8 @@ public class NotificationUtils {
 
 
     public static void clearAllNotifications(Context context) {
+        NotificationManager notificationManager = (NotificationManager)
+                context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
     }
 
