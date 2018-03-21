@@ -20,6 +20,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.BatteryManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -66,17 +68,49 @@ public class MainActivity extends AppCompatActivity implements
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         prefs.registerOnSharedPreferenceChangeListener(this);
 
-        /** For the dynamic broadcast Reciever */
+        /*
+         * Setup and register the dynamic broadcast receiver
+         */
         mChargingIntentFilter = new IntentFilter();
+        mChargingReceiver = new ChargingBroadcastReceiver();
         mChargingIntentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
         mChargingIntentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
-
-        mChargingReceiver = new ChargingBroadcastReceiver();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        /** Determine the current charging state **/
+        //  Check if you are on Android M or later, if so...
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // Get a BatteryManager instance using getSystemService()
+            BatteryManager batteryManager = (BatteryManager) getSystemService(BATTERY_SERVICE);
+            // Call isCharging on the battery manager and pass the result on to your show
+            // charging method
+            showCharging(batteryManager.isCharging());
+        } else {
+            // If your user is not on M+, then...
+
+            // Create a new intent filter with the action ACTION_BATTERY_CHANGED. This is a
+            // sticky broadcast that contains a lot of information about the battery state.
+            IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+            // Set a new Intent object equal to what is returned by registerReceiver, passing in null
+            // for the receiver. Pass in your intent filter as well. Passing in null means that you're
+            // getting the current state of a sticky broadcast - the intent returned will contain the
+            // battery information you need.
+            Intent currentBatteryStatusIntent = registerReceiver(null, ifilter);
+            // Get the integer extra BatteryManager.EXTRA_STATUS. Check if it matches
+            // BatteryManager.BATTERY_STATUS_CHARGING or BatteryManager.BATTERY_STATUS_FULL. This means
+            // the battery is currently charging.
+            int batteryStatus = currentBatteryStatusIntent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+            boolean isCharging = batteryStatus == BatteryManager.BATTERY_STATUS_CHARGING ||
+                    batteryStatus == BatteryManager.BATTERY_STATUS_FULL;
+            // Update the UI using your showCharging method
+            showCharging(isCharging);
+        }
+
+        /** Register the receiver for future state changes **/
         registerReceiver(mChargingReceiver, mChargingIntentFilter);
     }
 
@@ -146,19 +180,13 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    public void testNotification(View view) {
-        NotificationUtils.remindUserBecauseCharging(this);
-    }
-
     private class ChargingBroadcastReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-
             String action = intent.getAction();
             boolean isCharging = TextUtils.equals(action, Intent.ACTION_POWER_CONNECTED);
             showCharging(isCharging);
-
         }
     }
 }
