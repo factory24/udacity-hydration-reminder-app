@@ -33,7 +33,6 @@ import android.widget.Toast;
 
 import com.example.android.background.sync.ReminderUtilities;
 import com.example.android.background.sync.WaterReminderIntentService;
-import com.example.android.background.utilities.NotificationUtils;
 import com.example.android.background.utilities.PreferenceUtilities;
 
 import static com.example.android.background.sync.ReminderTasks.ACTION_INCREMENT_WATER_COUNT;
