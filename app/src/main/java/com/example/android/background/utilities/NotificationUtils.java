@@ -44,7 +44,7 @@ public class NotificationUtils {
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    //This method is necessary to decode a bitmap needed for the notification.
+    // This method is necessary to decode a bitmap needed for the notification.
     private static Bitmap largeIcon(Context context) {
         Resources res = context.getResources();
         return BitmapFactory.decodeResource(res, R.drawable.ic_local_drink_black_24px);
@@ -53,8 +53,10 @@ public class NotificationUtils {
     // This method will create a notification for charging.
     public static void remindUserBecauseCharging(Context context) {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        notificationManager = (NotificationManager)
+                context.getSystemService(Context.NOTIFICATION_SERVICE);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(
                     WATER_REMINDER_NOTIFICATION_CHANNEL_ID,
                     context.getString(R.string.main_notification_channel_name),
@@ -133,6 +135,4 @@ public class NotificationUtils {
 
         return incrementWaterCounterAction;
     }
-
-
 }
