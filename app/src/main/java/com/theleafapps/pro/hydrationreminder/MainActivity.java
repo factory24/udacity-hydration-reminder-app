@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.background;
+package com.theleafapps.pro.hydrationreminder;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -26,16 +26,22 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.background.sync.ReminderUtilities;
-import com.example.android.background.sync.WaterReminderIntentService;
-import com.example.android.background.utilities.PreferenceUtilities;
+import com.theleafapps.pro.hydrationreminder.sync.ReminderUtilities;
+import com.theleafapps.pro.hydrationreminder.sync.WaterReminderFirebaseJobService;
+import com.theleafapps.pro.hydrationreminder.sync.WaterReminderIntentService;
+import com.theleafapps.pro.hydrationreminder.utilities.PreferenceUtilities;
 
-import static com.example.android.background.sync.ReminderTasks.ACTION_INCREMENT_WATER_COUNT;
+import static com.theleafapps.pro.hydrationreminder.sync.ReminderTasks.ACTION_INCREMENT_WATER_COUNT;
 
 public class MainActivity extends AppCompatActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener {
@@ -46,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements
     private TextView mChargingCountDisplay;
     private ImageView mChargingImageView;
     private Toast mToast;
+    private Button onOffSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +63,33 @@ public class MainActivity extends AppCompatActivity implements
         mWaterCountDisplay = (TextView) findViewById(R.id.tv_water_count);
         mChargingCountDisplay = (TextView) findViewById(R.id.tv_charging_reminder_count);
         mChargingImageView = (ImageView) findViewById(R.id.iv_power_increment);
+        onOffSwitch =  (Button) findViewById(R.id.onOffSwitch);
 
         /** Set the original values in the UI **/
         updateWaterCount();
         updateChargingReminderCount();
 
+
         ReminderUtilities.scheduleChargingReminder(this);
+
+        if(ReminderUtilities.getDriver()){
+            Toast.makeText(this,"it is scheduled",Toast.LENGTH_SHORT).show();
+        }
+
+        onOffSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ReminderUtilities.cancelHydrationReminder();
+
+
+
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+
 
         /** Setup the shared preference listener **/
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -187,5 +215,25 @@ public class MainActivity extends AppCompatActivity implements
             boolean isCharging = TextUtils.equals(action, Intent.ACTION_POWER_CONNECTED);
             showCharging(isCharging);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
+            return true;
+        }
+        if (id == R.id.action_reset) {
+            Toast.makeText(this,"Reset Counters to be implemented",Toast.LENGTH_LONG).show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

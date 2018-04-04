@@ -1,4 +1,4 @@
-package com.example.android.background.sync;
+package com.theleafapps.pro.hydrationreminder.sync;
 
 import android.content.Context;
 
@@ -18,18 +18,20 @@ import java.util.concurrent.TimeUnit;
 
 public class ReminderUtilities {
 
-    private static final int REMINDER_INTERVAL_MINUTES = 15;
+    private static final int REMINDER_INTERVAL_MINUTES = 1;
     private static final int REMINDER_INTERVAL_SECONDS = (int) (TimeUnit.MINUTES.toSeconds(REMINDER_INTERVAL_MINUTES));
     private static final int SYNC_FLEXTIME_SECONDS = REMINDER_INTERVAL_SECONDS;
     private static final String REMINDER_JOB_TAG = "hydration_reminder_tag";
+    private static FirebaseJobDispatcher dispatcher;
 
     private static boolean sInitialized;
+    private static Driver driver;
 
     synchronized public static void scheduleChargingReminder(Context context) {
         if (sInitialized) return;
 
-        Driver driver = new GooglePlayDriver(context);
-        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(driver);
+        driver = new GooglePlayDriver(context);
+        dispatcher = new FirebaseJobDispatcher(driver);
 
         Job constraintReminderJob = dispatcher.newJobBuilder()
                 .setService(WaterReminderFirebaseJobService.class)
@@ -44,5 +46,13 @@ public class ReminderUtilities {
                 .build();
         dispatcher.schedule(constraintReminderJob);
         sInitialized = true;
+    }
+
+    synchronized public static void cancelHydrationReminder(){
+        driver.cancelAll();
+    }
+
+    public static boolean getDriver(){
+        return driver.isAvailable();
     }
 }

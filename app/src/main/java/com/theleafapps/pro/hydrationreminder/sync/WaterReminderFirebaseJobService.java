@@ -1,4 +1,4 @@
-package com.example.android.background.sync;
+package com.theleafapps.pro.hydrationreminder.sync;
 
 import android.content.Context;
 import android.os.AsyncTask;

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context="com.example.android.background.MainActivity">
+    tools:context="com.theleafapps.pro.hydrationreminder.MainActivity">
 
     <TextView
         android:id="@+id/tv_instructions"
@@ -84,6 +84,24 @@
             android:layout_toEndOf="@id/iv_power_increment"
             android:layout_toRightOf="@id/iv_power_increment"
             android:text="@string/default_charge_notification_count" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".25">
+
+        <Button
+            android:id="@+id/onOffSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="#ef9a9a"
+            android:textColor="@android:color/white"
+            android:text="Stop Reminding me"
+            android:layout_marginStart="81dp"/>
 
     </RelativeLayout>
 </LinearLayout>

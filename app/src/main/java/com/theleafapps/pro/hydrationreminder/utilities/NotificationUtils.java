@@ -1,4 +1,4 @@
-package com.example.android.background.utilities;
+package com.theleafapps.pro.hydrationreminder.utilities;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -13,10 +13,10 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 
-import com.example.android.background.MainActivity;
-import com.example.android.background.R;
-import com.example.android.background.sync.ReminderTasks;
-import com.example.android.background.sync.WaterReminderIntentService;
+import com.theleafapps.pro.hydrationreminder.MainActivity;
+import com.theleafapps.pro.hydrationreminder.R;
+import com.theleafapps.pro.hydrationreminder.sync.ReminderTasks;
+import com.theleafapps.pro.hydrationreminder.sync.WaterReminderIntentService;
 
 /**
  * Created by aviator on 13/03/18.

@@ -16,10 +16,11 @@ android {
         }
     }
 
-    defaultConfig{
+    defaultConfig {
         vectorDrawables.useSupportLibrary = true
     }
 }
+
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')

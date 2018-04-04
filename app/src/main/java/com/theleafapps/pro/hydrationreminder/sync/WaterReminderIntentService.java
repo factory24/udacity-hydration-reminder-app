@@ -1,4 +1,4 @@
-package com.example.android.background.sync;
+package com.theleafapps.pro.hydrationreminder.sync;
 /*
  * Copyright (C) 2016 The Android Open Source Project
  *

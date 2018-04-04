@@ -1,10 +1,10 @@
-package com.example.android.background.sync;
+package com.theleafapps.pro.hydrationreminder.sync;
 
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.example.android.background.utilities.NotificationUtils;
-import com.example.android.background.utilities.PreferenceUtilities;
+import com.theleafapps.pro.hydrationreminder.utilities.NotificationUtils;
+import com.theleafapps.pro.hydrationreminder.utilities.PreferenceUtilities;
 
 public class ReminderTasks {
 
