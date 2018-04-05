@@ -1,12 +1,12 @@
 package com.theleafapps.pro.hydrationreminder;
 
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 public class SettingsActivity extends AppCompatActivity {
 

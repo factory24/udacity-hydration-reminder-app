@@ -48,11 +48,11 @@ public class ReminderUtilities {
         sInitialized = true;
     }
 
-    synchronized public static void cancelHydrationReminder(){
+    synchronized public static void cancelHydrationReminder() {
         driver.cancelAll();
     }
 
-    public static boolean getDriver(){
+    public static boolean getDriver() {
         return driver.isAvailable();
     }
 }

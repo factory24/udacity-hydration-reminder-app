@@ -47,11 +47,11 @@ public final class PreferenceUtilities {
         PreferenceUtilities.setWaterCount(context, ++waterCount);
     }
 
-    public static void resetWaterCount(Context context){
+    public static void resetWaterCount(Context context) {
         PreferenceUtilities.setWaterCount(context, 0);
     }
 
-    public static void resetChargingReminderCount(Context context){
+    public static void resetChargingReminderCount(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
         SharedPreferences.Editor editor = prefs.edit();
