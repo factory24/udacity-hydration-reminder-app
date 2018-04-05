@@ -36,7 +36,6 @@ public class ReminderUtilities {
         Job constraintReminderJob = dispatcher.newJobBuilder()
                 .setService(WaterReminderFirebaseJobService.class)
                 .setTag(REMINDER_JOB_TAG)
-                .setConstraints(Constraint.DEVICE_CHARGING)
                 .setLifetime(Lifetime.FOREVER)
                 .setRecurring(true)
                 .setTrigger(Trigger.executionWindow(
