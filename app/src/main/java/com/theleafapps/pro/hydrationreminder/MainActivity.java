@@ -68,12 +68,7 @@ public class MainActivity extends AppCompatActivity implements
         /** Set the original values in the UI **/
         updateWaterCount();
 
-
-        ReminderUtilities.scheduleChargingReminder(this);
-
-        if (ReminderUtilities.getDriver()) {
-            Toast.makeText(this, R.string.enableReminderToastMessage, Toast.LENGTH_SHORT).show();
-        }
+        scheduleReminderService();
 
         onOffSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
 
+        scheduleReminderService();
         /** Determine the current charging state **/
         //  Check if you are on Android M or later, if so...
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -200,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements
         if (PreferenceUtilities.KEY_WATER_COUNT.equals(key)) {
             updateWaterCount();
         } else if (PreferenceUtilities.KEY_CHARGING_REMINDER_COUNT.equals(key)) {
-            
+
         }
     }
 
@@ -224,6 +220,14 @@ public class MainActivity extends AppCompatActivity implements
             Toast.makeText(this, R.string.resetHydrationCounterToastMessage, Toast.LENGTH_LONG).show();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void scheduleReminderService() {
+        ReminderUtilities.scheduleChargingReminder(this);
+
+        if (ReminderUtilities.getDriver()) {
+            Toast.makeText(this, R.string.enableReminderToastMessage, Toast.LENGTH_LONG).show();
+        }
     }
 
     private class ChargingBroadcastReceiver extends BroadcastReceiver {

@@ -28,8 +28,8 @@ public class SettingsActivity extends AppCompatActivity {
              * Finding the current value of the specified preference string value
              * to bind with the settings in the settings screen
              */
-            Preference maxResults = findPreference(getString(R.string.settings_reminder_interval_key));
-            bindPreferenceSummaryToValue(maxResults);
+            Preference intervalTime = findPreference(getString(R.string.settings_reminder_interval_key));
+            bindPreferenceSummaryToValue(intervalTime);
         }
 
         @Override

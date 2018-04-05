@@ -67,10 +67,4 @@ public final class PreferenceUtilities {
         editor.putInt(KEY_CHARGING_REMINDER_COUNT, ++chargingReminders);
         editor.apply();
     }
-
-    public static int getChargingReminderCount(Context context) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        int chargingReminders = prefs.getInt(KEY_CHARGING_REMINDER_COUNT, DEFAULT_COUNT);
-        return chargingReminders;
-    }
 }
