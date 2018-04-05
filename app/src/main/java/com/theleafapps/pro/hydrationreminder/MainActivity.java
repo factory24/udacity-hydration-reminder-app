@@ -17,6 +17,7 @@ package com.theleafapps.pro.hydrationreminder;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -24,20 +25,19 @@ import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.theleafapps.pro.hydrationreminder.sync.ReminderTasks;
 import com.theleafapps.pro.hydrationreminder.sync.ReminderUtilities;
-import com.theleafapps.pro.hydrationreminder.sync.WaterReminderFirebaseJobService;
 import com.theleafapps.pro.hydrationreminder.sync.WaterReminderIntentService;
 import com.theleafapps.pro.hydrationreminder.utilities.PreferenceUtilities;
 
@@ -63,17 +63,16 @@ public class MainActivity extends AppCompatActivity implements
         mWaterCountDisplay = (TextView) findViewById(R.id.tv_water_count);
         mChargingCountDisplay = (TextView) findViewById(R.id.tv_charging_reminder_count);
         mChargingImageView = (ImageView) findViewById(R.id.iv_power_increment);
-        onOffSwitch =  (Button) findViewById(R.id.onOffSwitch);
+        onOffSwitch = (Button) findViewById(R.id.onOffSwitch);
 
         /** Set the original values in the UI **/
         updateWaterCount();
-        updateChargingReminderCount();
 
 
         ReminderUtilities.scheduleChargingReminder(this);
 
-        if(ReminderUtilities.getDriver()){
-            Toast.makeText(this,"it is scheduled",Toast.LENGTH_SHORT).show();
+        if (ReminderUtilities.getDriver()) {
+            Toast.makeText(this, R.string.enableReminderToastMessage, Toast.LENGTH_SHORT).show();
         }
 
         onOffSwitch.setOnClickListener(new View.OnClickListener() {
@@ -81,12 +80,20 @@ public class MainActivity extends AppCompatActivity implements
             public void onClick(View v) {
                 ReminderUtilities.cancelHydrationReminder();
 
-
-
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.addCategory(Intent.CATEGORY_HOME);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+                alertDialogBuilder.setMessage(getString(R.string.stopRemiderDialogMessage));
+                alertDialogBuilder.setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                Intent intent = new Intent(Intent.ACTION_MAIN);
+                                intent.addCategory(Intent.CATEGORY_HOME);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
+                        });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
             }
         });
 
@@ -207,16 +214,6 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    private class ChargingBroadcastReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            boolean isCharging = TextUtils.equals(action, Intent.ACTION_POWER_CONNECTED);
-            showCharging(isCharging);
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
@@ -232,8 +229,20 @@ public class MainActivity extends AppCompatActivity implements
             return true;
         }
         if (id == R.id.action_reset) {
-            Toast.makeText(this,"Reset Counters to be implemented",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Reset Counters to be implemented", Toast.LENGTH_LONG).show();
+            ReminderTasks.resetWaterCount(this);
+            ReminderTasks.resetChargingReminderCount(this);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private class ChargingBroadcastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            boolean isCharging = TextUtils.equals(action, Intent.ACTION_POWER_CONNECTED);
+            showCharging(isCharging);
+        }
     }
 }

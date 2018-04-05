@@ -8,7 +8,7 @@
     <string name="charging_plug_content_desc">charging plug image</string>
 
     <string name="default_water_count">0</string>
-    <string name="default_charge_notification_count">Hydrate while charging reminder sent 0 times</string>
+    <string name="default_charge_notification_count">Just Like Battery Needs Charging, Rejuvenate yourself regularly</string>
 
     <plurals name="charge_notification_count">
         <item quantity="zero">Hydrate while charging reminder sent %d times</item>
@@ -30,5 +30,7 @@
     <string name="settings_reminder_interval_time_label">Reminder Time (in Minutes)</string>
     <string name="menu_item_settings">Settings</string>
     <string name="menu_item_reset">Reset</string>
+    <string name="stopRemiderDialogMessage">Hydration Reminders are switched off, Come back to enable again</string>
+    <string name="enableReminderToastMessage">Hydrate yourself regularly, Reminders are enabled now !!</string>
 
 </resources>

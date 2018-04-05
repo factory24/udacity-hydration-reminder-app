@@ -47,6 +47,18 @@ public final class PreferenceUtilities {
         PreferenceUtilities.setWaterCount(context, ++waterCount);
     }
 
+    public static void resetWaterCount(Context context){
+        PreferenceUtilities.setWaterCount(context, 0);
+    }
+
+    public static void resetChargingReminderCount(Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(KEY_CHARGING_REMINDER_COUNT, 0);
+        editor.apply();
+    }
+
     synchronized public static void incrementChargingReminderCount(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         int chargingReminders = prefs.getInt(KEY_CHARGING_REMINDER_COUNT, DEFAULT_COUNT);

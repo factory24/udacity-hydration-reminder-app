@@ -98,10 +98,11 @@
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="81dp"
+            android:layout_marginStart="81dp"
             android:background="#ef9a9a"
-            android:textColor="@android:color/white"
             android:text="Stop Reminding me"
-            android:layout_marginStart="81dp"/>
+            android:textColor="@android:color/white" />
 
     </RelativeLayout>
 </LinearLayout>
