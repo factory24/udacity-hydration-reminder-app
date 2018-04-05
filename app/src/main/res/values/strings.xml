@@ -32,5 +32,6 @@
     <string name="menu_item_reset">Reset</string>
     <string name="stopRemiderDialogMessage">Hydration Reminders are switched off, Come back to enable again</string>
     <string name="enableReminderToastMessage">Hydrate yourself regularly, Reminders are enabled now !!</string>
+    <string name="resetHydrationCounterToastMessage">Hydration Counter has been reset</string>
 
 </resources>

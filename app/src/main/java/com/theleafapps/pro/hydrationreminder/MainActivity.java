@@ -163,16 +163,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     /**
-     * Updates the TextView to display the new charging reminder count from SharedPreferences
-     */
-    private void updateChargingReminderCount() {
-        int chargingReminders = PreferenceUtilities.getChargingReminderCount(this);
-        String formattedChargingReminders = getResources().getQuantityString(
-                R.plurals.charge_notification_count, chargingReminders, chargingReminders);
-        mChargingCountDisplay.setText(formattedChargingReminders);
-    }
-
-    /**
      * Adds one to the water count and shows a toast
      */
     public void incrementWater(View view) {
@@ -210,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements
         if (PreferenceUtilities.KEY_WATER_COUNT.equals(key)) {
             updateWaterCount();
         } else if (PreferenceUtilities.KEY_CHARGING_REMINDER_COUNT.equals(key)) {
-            updateChargingReminderCount();
+            
         }
     }
 
@@ -229,9 +219,9 @@ public class MainActivity extends AppCompatActivity implements
             return true;
         }
         if (id == R.id.action_reset) {
-            Toast.makeText(this, "Reset Counters to be implemented", Toast.LENGTH_LONG).show();
             ReminderTasks.resetWaterCount(this);
             ReminderTasks.resetChargingReminderCount(this);
+            Toast.makeText(this, R.string.resetHydrationCounterToastMessage, Toast.LENGTH_LONG).show();
         }
         return super.onOptionsItemSelected(item);
     }
