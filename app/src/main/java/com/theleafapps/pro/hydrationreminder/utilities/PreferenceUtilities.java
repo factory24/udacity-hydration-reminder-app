@@ -26,8 +26,10 @@ public final class PreferenceUtilities {
 
     public static final String KEY_WATER_COUNT = "water-count";
     public static final String KEY_CHARGING_REMINDER_COUNT = "charging-reminder-count";
+    public static final String KEY_REMINDER_TIME_INTERVAL_SETTINGS = "reminder_interval_time";
 
     private static final int DEFAULT_COUNT = 0;
+    private static final String DEFAULT_REMINDER_TIME_INTERVAL_SETTINGS_TIME = "15";
 
     synchronized private static void setWaterCount(Context context, int glassesOfWater) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -65,6 +67,13 @@ public final class PreferenceUtilities {
 
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(KEY_CHARGING_REMINDER_COUNT, ++chargingReminders);
+        editor.apply();
+    }
+
+    public static void setDefaultSharedPreferenceReminderTime(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(KEY_REMINDER_TIME_INTERVAL_SETTINGS, DEFAULT_REMINDER_TIME_INTERVAL_SETTINGS_TIME);
         editor.apply();
     }
 }

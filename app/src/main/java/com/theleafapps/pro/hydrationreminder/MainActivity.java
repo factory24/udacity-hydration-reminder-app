@@ -70,17 +70,20 @@ public class MainActivity extends AppCompatActivity implements
 
         scheduleReminderService();
 
+        PreferenceUtilities.setDefaultSharedPreferenceReminderTime(this);
+
         onOffSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ReminderUtilities.cancelHydrationReminder();
-
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+                AlertDialog.Builder alertDialogBuilder =
+                        new AlertDialog.Builder(MainActivity.this);
                 alertDialogBuilder.setMessage(getString(R.string.stopRemiderDialogMessage));
                 alertDialogBuilder.setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface arg0, int arg1) {
+                                ReminderUtilities.cancelHydrationReminder();
+
                                 Intent intent = new Intent(Intent.ACTION_MAIN);
                                 intent.addCategory(Intent.CATEGORY_HOME);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -133,7 +136,8 @@ public class MainActivity extends AppCompatActivity implements
             // Get the integer extra BatteryManager.EXTRA_STATUS. Check if it matches
             // BatteryManager.BATTERY_STATUS_CHARGING or BatteryManager.BATTERY_STATUS_FULL. This means
             // the battery is currently charging.
-            int batteryStatus = currentBatteryStatusIntent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+            int batteryStatus = currentBatteryStatusIntent.getIntExtra(
+                    BatteryManager.EXTRA_STATUS, -1);
             boolean isCharging = batteryStatus == BatteryManager.BATTERY_STATUS_CHARGING ||
                     batteryStatus == BatteryManager.BATTERY_STATUS_FULL;
             // Update the UI using your showCharging method
@@ -217,7 +221,8 @@ public class MainActivity extends AppCompatActivity implements
         if (id == R.id.action_reset) {
             ReminderTasks.resetWaterCount(this);
             ReminderTasks.resetChargingReminderCount(this);
-            Toast.makeText(this, R.string.resetHydrationCounterToastMessage, Toast.LENGTH_LONG).show();
+            Toast.makeText(this,
+                    R.string.resetHydrationCounterToastMessage, Toast.LENGTH_LONG).show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -226,7 +231,8 @@ public class MainActivity extends AppCompatActivity implements
         ReminderUtilities.scheduleChargingReminder(this);
 
         if (ReminderUtilities.getDriver()) {
-            Toast.makeText(this, R.string.enableReminderToastMessage, Toast.LENGTH_LONG).show();
+            Toast.makeText(this,
+                    R.string.enableReminderToastMessage, Toast.LENGTH_SHORT).show();
         }
     }
 

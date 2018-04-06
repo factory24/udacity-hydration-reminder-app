@@ -6,6 +6,6 @@
         android:defaultValue="15"
         android:dialogTitle="Select Time (in minutes)"
         android:key="@string/settings_reminder_interval_key"
-        android:title="@string/setting_title"/>
+        android:title="@string/setting_title" />
 
 </PreferenceScreen>

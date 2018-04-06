@@ -6,6 +6,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -14,6 +15,9 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Settings");
     }
 
     public static class HydrationPreferenceFragment extends PreferenceFragment

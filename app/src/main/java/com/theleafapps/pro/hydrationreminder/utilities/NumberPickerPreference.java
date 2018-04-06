@@ -36,7 +36,6 @@ public class NumberPickerPreference extends DialogPreference {
         /*
          * Anything else you want to add to this.
          */
-
         return numberPicker;
     }
 
