@@ -13,7 +13,7 @@ Our body needs water in ample amount on a daily basis
     - Android Preference Settings
     - Android Fragments
 
-# Screenshots
+## Screenshots
 
 ![Alt text](/Screenshots/1.png?raw=true)
 ![Alt text](/Screenshots/2.png?raw=true)
